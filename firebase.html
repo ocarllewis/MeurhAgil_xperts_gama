@@ -33,17 +33,29 @@ app = firebase.initializeApp(config);
 
 db=app.firestore()
 
+let meuIP=getIp( function (meuIP) {
+
+
+
 window.addEventListener('load', function(){
     let f = document.querySelector ('form') 
-     function saveuser(name,email,date, ){
+
+
+     function saveuser(name,email,date,tipo){
         
+
+
         db.collection("users").add({
         
-        name:name, email:email, date:date,
+        Nome:name, EMAIL:email, DATA:date,IP:meuIP, TIPO:tipo
         
         
         })
+
+
+        
         .then(function(docRef) {
+            
             alert('Salvo Com Sucesso')
             f.elements['name'].value ="";
              f.elements['email'].value ="";
@@ -53,25 +65,29 @@ window.addEventListener('load', function(){
             console.error("Error adding document: ", error);
         });
         
-        
-        }
+           }
 
 
 f.addEventListener('submit', function(e){
 let nome= f.elements['name'].value 
 let email= f.elements['email'].value 
 let date = completeDate();
-// let ip = getIp();
-
-saveuser(nome,email,date)
+let tipo = classificaTipo(email);
+saveuser(nome,email,date,tipo)
 e.preventDefault();
 console.log(e);
+
+
 })
+
+
+     
+});
 
 
 });
 
-
+// DATA 
 function completeDate () {
     now = new Date();
     year = "" + now.getFullYear();
@@ -83,10 +99,11 @@ function completeDate () {
     return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
   }
 
+// -----------------TESTE 
 
+// Pegando o IP
 
-
-    function getIp(callback)
+function getIp(callback)
 {
     function response(s)
     {
@@ -118,32 +135,226 @@ function completeDate () {
     } else {
         document.addEventListener('DOMContentLoaded', trigger);
     }
+}
 
+
+
+
+
+
+// ------------ tipo
+
+classificaTipo = (email) => {
+
+let dominio = email.substring(email.indexOf("@") + 1, email.length);
+
+let listaConsumidor = [
+  'gmail.com',
+  'uol.com.br',
+  'ig.com.br',
+  'outlook.com',
+  'outlook.com.br',
+  'hotmail.com',
+  'hotmail.com.br',
+  'bol.com.br',
+  'icloud.com',
+  'terra.com.br',
+  'globo.com',
+  'yahoo.com.br',
+  'yahoo.com.br'];
+
+if (listaConsumidor.includes(dominio)) {
+  return 'B2C';
+} else {
+  return 'B2B';
+}
 
 }
 
- getIp(function (ip) { 
-     console.log(ip); 
-     
-     
-     });
+
+
+
+
 
  
+
+
+
+
+
+
+
 
 
 
 </script>
  
+
+
+
+
+<style>
+
+form, input {
+
+  border-radius: 50px;
+  border: solid 1px #0a0a0a;
+  background-color: #ffffff;
+
+  width: 282px;
+  height: 37px;
+  font-family: Montserrat;
+  font-size: 30px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.23;
+  letter-spacing: normal;
+  text-align: center;
+  color: #857f7f;
+
+}
+
+
+
+input[type="submit"], textarea {
+  background-color : #52adbf; 
+  color: #0a0a0a;
+
+}
+a:link, h1,h2{
+  font-family: Montserrat;
+
+}
+
+@media ( max-width: 600px){
+ 
+table{
+
+  width:100%;
+  font-size: 30px;
+
+}
+
+.img-section , img{
+
+  width: 70%;
+}
+
+h1,h2{
+  font-size: 20px;
+  font-stretch: normal;
+}
+
+
+
+
+}
+
+
+
+
+
+</style>
+
+
 </head>
+
+<header>
+
+
+
+
+
+</header>
+
 <body>
-<form>
+
+  <header id="cabecalho">
+
+    <table  width="100%">
+        <div class="miniTabela">
+      <tr>
+            <td>        <img src="logo.png"
+                srcset="logo.png 2x,
+                logo.png 3x"
+                class="RhImg"> </td> 
+    
+            <td > <h1 > <FONT color=#005f4e > <a href="index.html">Home</a></FONT></h1></td>
+    
+            <td><h1  ><FONT color=#005f4e ><a href="index.html">Cadastre - se</a></FONT> </h1> </td>
+            <td><h1  ><FONT color=#005f4e ><a href="index.html">Contato</a></FONT></h1> </td>
+         
+        </tr>
+      </div>
+      </table>
+    
+           <hr />
+        </header>
+
+<h1 align="center">
+        INSCREVA-SE
+
+
+</h1>
+
+<h2 align="center">PARA RECEBER NOSSO MATERIAL E  ATUALIZAÇÕES </h2>
+
+<div class="formulario" align="center">
+<form action="" method="post">
 
 
     <input name="name" placeholder=" Nome Completo" type="text" required/>
+<br>
+
     <input name="email" placeholder="E-mail" type="email" required/>
-     <input type="submit" value="Enviar" />
+<br><br>
+
+     <input  type="submit" value="Enviar" />
+
+
+
 
 </form>
+</div>
+
+
+<br><br><br><br>
+
+
+        <br><br><br><br>
+        
+
+<table align="center" class="img-section" >
+<div >
+<tr>
+  
+  <td> <img src="linkedin-logo.png"
+    srcset="linkedin-logo@2x.png 2x,
+   linkedin-logo@3x.png 3x"
+   class="linkedin-logo" id="test"> </td>
+<td><img src="instagram.png"
+  srcset="instagram@2x.png 2x,
+  instagram@3x.png 3x"
+  class="instagram-logo"> </td>
+
+
+  <td><img src="facebook-logo-button.png"
+    srcset="facebook-logo-button@2x.png 2x,
+    facebook-logo-button@3x.png 3x"
+    class="facebook-logo"> </td>
+
+
+</tr>
+</div>
+
+</table>
+
+            <br><br>             
+            <br><br>            
+               <br><br>                                   
+         
+        
 
 
 
