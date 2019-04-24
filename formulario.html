@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <title>Form</title>
 
+
 <!-- Firebase App is always required and must be first -->
 <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
 
@@ -27,19 +28,36 @@
     storageBucket: "meurhagil-e8c78.appspot.com",
     messagingSenderId: "316155272451"
   };
+
+
+
 app = firebase.initializeApp(config);
+
 db=app.firestore()
+
+let meuIP=getIp( function (meuIP) {
+
+
+
 window.addEventListener('load', function(){
     let f = document.querySelector ('form') 
-     function saveuser(name,email,date, ){
+
+
+     function saveuser(name,email,date,tipo){
         
+
+
         db.collection("users").add({
         
-        name:name, email:email, date:date,
+        Nome:name, EMAIL:email, DATA:date,IP:meuIP, TIPO:tipo
         
         
         })
+
+
+        
         .then(function(docRef) {
+            
             alert('Salvo Com Sucesso')
             f.elements['name'].value ="";
              f.elements['email'].value ="";
@@ -49,18 +67,29 @@ window.addEventListener('load', function(){
             console.error("Error adding document: ", error);
         });
         
-        
-        }
+           }
+
+
 f.addEventListener('submit', function(e){
 let nome= f.elements['name'].value 
 let email= f.elements['email'].value 
 let date = completeDate();
-// let ip = getIp();
-saveuser(nome,email,date)
+let tipo = classificaTipo(email);
+saveuser(nome,email,date,tipo)
 e.preventDefault();
 console.log(e);
+
+
 })
+
+
+     
 });
+
+
+});
+
+// DATA 
 function completeDate () {
     now = new Date();
     year = "" + now.getFullYear();
@@ -71,17 +100,25 @@ function completeDate () {
     second = "" + now.getSeconds(); if (second.length == 1) { second = "0" + second; }
     return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
   }
-    function getIp(callback)
+
+// -----------------TESTE 
+
+// Pegando o IP
+
+function getIp(callback)
 {
     function response(s)
     {
         callback(window.userip);
+
         s.onload = s.onerror = null;
         document.body.removeChild(s);
     }
+
     function trigger()
     {
         window.userip = false;
+
         var s = document.createElement("script");
         s.async = true;
         s.onload = function() {
@@ -90,27 +127,132 @@ function completeDate () {
         s.onerror = function() {
             response(s);
         };
+
         s.src = "https://l2.io/ip.js?var=userip";
         document.body.appendChild(s);
     }
+
     if (/^(interactive|complete)$/i.test(document.readyState)) {
         trigger();
     } else {
         document.addEventListener('DOMContentLoaded', trigger);
     }
 }
- getIp(function (ip) { 
-     console.log(ip); 
-     
-     
-     });
- 
+
+
+
+
+
+
+// ------------ tipo
+
+classificaTipo = (email) => {
+
+let dominio = email.substring(email.indexOf("@") + 1, email.length);
+
+let listaConsumidor = [
+  'gmail.com',
+  'uol.com.br',
+  'ig.com.br',
+  'outlook.com',
+  'outlook.com.br',
+  'hotmail.com',
+  'hotmail.com.br',
+  'bol.com.br',
+  'icloud.com',
+  'terra.com.br',
+  'globo.com',
+  'yahoo.com.br',
+  'yahoo.com.br'];
+
+if (listaConsumidor.includes(dominio)) {
+  return 'B2C';
+} else {
+  return 'B2B';
+}
+
+}
+
+
 </script>
+ 
+
+
+
+
+<style>
+
+form, input {
+
+  border-radius: 50px;
+  border: solid 1px #0a0a0a;
+  background-color: #ffffff;
+
+  width: 282px;
+  height: 37px;
+  font-family: Montserrat;
+  font-size: 30px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.23;
+  letter-spacing: normal;
+  text-align: center;
+  color: #857f7f;
+
+}
+
+
+
+input[type="submit"], textarea {
+  background-color : #52adbf; 
+  color: #0a0a0a;
+
+}
+a:link, h1,h2{
+  font-family: Montserrat;
+
+}
+
+@media ( max-width: 600px){
+ 
+table{
+
+  width:100%;
+  font-size: 30px;
+
+}
+
+.img-section , img{
+
+  width: 70%;
+}
+
+h1,h2{
+  font-size: 20px;
+  font-stretch: normal;
+}
+
+
+
+
+}
+
+
+
+
+
+</style>
+
+
+
+
+ 
      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
 </head>
 <body>
-         
+         <!--Aqui é a barra de navegação, o logo leva para o Index(pag inicial) -->
 
         <div class="barranav">
                 <div class="barranav-logo">
@@ -118,23 +260,22 @@ function completeDate () {
                 </div>
                
             <nav class="barranav-items">
+                <!--<div class="barranav-link"> 
+                    <a class="navBar-a" href="quemsomos.html">Quem Somos</a>
                 </div>-->
-                <div class="barranav-link"> 
-                    <a class="navBar-a" href="formulario.html">Cadastre-se</a>
-                </div>
-                <div class="buscanav">
-                  <input  type="text" id="title" placeholder="Buscar..."/>
-                  
-                                    
-                  </div>
+    
+                
             </nav>
         </div>
         <div class="linhanav"></div>
-        
+        <!--Arrumar forms daqui para baixo-->
+        <div class="formularioCentro" align="center">
 <div class="titulo">
         <h1>Inscreva-se</h1>
         <h4>PARA RECEBER NOSSO MATERIAL E ATUALIZAÇÕES</h4>
     </div>
+
+    
 <form>
 
 
@@ -143,7 +284,7 @@ function completeDate () {
     <input type="submit" value="Enviar" />
 
 </form>
-
+</div>
 
 
 
