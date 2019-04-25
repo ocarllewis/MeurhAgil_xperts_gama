@@ -1,0 +1,366 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Form</title>
+
+<!-- Firebase App is always required and must be first -->
+<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+
+<!-- Add additional services that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-messaging.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-functions.js"></script>
+
+
+<script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAVstfh6NuexP9ycz52QTx-LVykiEuJGhk",
+    authDomain: "meurhagil-e8c78.firebaseapp.com",
+    databaseURL: "https://meurhagil-e8c78.firebaseio.com",
+    projectId: "meurhagil-e8c78",
+    storageBucket: "meurhagil-e8c78.appspot.com",
+    messagingSenderId: "316155272451"
+  };
+
+
+
+app = firebase.initializeApp(config);
+
+db=app.firestore()
+
+let meuIP=getIp( function (meuIP) {
+
+
+
+window.addEventListener('load', function(){
+    let f = document.querySelector ('form') 
+
+
+     function saveuser(name,email,date,tipo){
+        
+
+
+        db.collection("users").add({
+        
+        Nome:name, EMAIL:email, DATA:date,IP:meuIP, TIPO:tipo
+        
+        
+        })
+
+
+        
+        .then(function(docRef) {
+            
+            alert('Salvo Com Sucesso')
+            f.elements['name'].value ="";
+             f.elements['email'].value ="";
+             
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+        });
+        
+           }
+
+
+f.addEventListener('submit', function(e){
+let nome= f.elements['name'].value 
+let email= f.elements['email'].value 
+let date = completeDate();
+let tipo = classificaTipo(email);
+saveuser(nome,email,date,tipo)
+e.preventDefault();
+console.log(e);
+
+
+})
+
+
+     
+});
+
+
+});
+
+// DATA 
+function completeDate () {
+    now = new Date();
+    year = "" + now.getFullYear();
+    month = "" + (now.getMonth() + 1); if (month.length == 1) { month = "0" + month; }
+    day = "" + now.getDate(); if (day.length == 1) { day = "0" + day; }
+    hour = "" + now.getHours(); if (hour.length == 1) { hour = "0" + hour; }
+    minute = "" + now.getMinutes(); if (minute.length == 1) { minute = "0" + minute; }
+    second = "" + now.getSeconds(); if (second.length == 1) { second = "0" + second; }
+    return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+  }
+
+// -----------------TESTE 
+
+// Pegando o IP
+
+function getIp(callback)
+{
+    function response(s)
+    {
+        callback(window.userip);
+
+        s.onload = s.onerror = null;
+        document.body.removeChild(s);
+    }
+
+    function trigger()
+    {
+        window.userip = false;
+
+        var s = document.createElement("script");
+        s.async = true;
+        s.onload = function() {
+            response(s);
+        };
+        s.onerror = function() {
+            response(s);
+        };
+
+        s.src = "https://l2.io/ip.js?var=userip";
+        document.body.appendChild(s);
+    }
+
+    if (/^(interactive|complete)$/i.test(document.readyState)) {
+        trigger();
+    } else {
+        document.addEventListener('DOMContentLoaded', trigger);
+    }
+}
+
+
+
+
+
+
+// ------------ tipo
+
+classificaTipo = (email) => {
+
+let dominio = email.substring(email.indexOf("@") + 1, email.length);
+
+let listaConsumidor = [
+  'gmail.com',
+  'uol.com.br',
+  'ig.com.br',
+  'outlook.com',
+  'outlook.com.br',
+  'hotmail.com',
+  'hotmail.com.br',
+  'bol.com.br',
+  'icloud.com',
+  'terra.com.br',
+  'globo.com',
+  'yahoo.com.br',
+  'yahoo.com.br'];
+
+if (listaConsumidor.includes(dominio)) {
+  return 'B2C';
+} else {
+  return 'B2B';
+}
+
+}
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+</script>
+ 
+
+
+
+
+<style>
+
+form, input {
+
+  border-radius: 50px;
+  border: solid 1px #0a0a0a;
+  background-color: #ffffff;
+
+  width: 282px;
+  height: 37px;
+  font-family: Montserrat;
+  font-size: 30px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.23;
+  letter-spacing: normal;
+  text-align: center;
+  color: #857f7f;
+
+}
+
+.redes > ul > li > a > img {
+    width: 10%;
+}
+
+input[type="submit"], textarea {
+  background-color : #52adbf; 
+  color: #0a0a0a;
+
+}
+a:link, h1,h2{
+  font-family: Montserrat;
+
+}
+
+@media ( max-width: 600px){
+ 
+table{
+
+  width:100%;
+  font-size: 30px;
+
+}
+
+.img-section , img{
+
+  width: 70%;
+}
+
+h1,h2{
+  font-size: 20px;
+  font-stretch: normal;
+}
+
+.redes {
+        display: inline;
+        flex-direction: row;
+        align-items: start;
+        justify-content: start;
+        width: 30%;
+    }
+
+
+}
+
+
+
+
+
+</style>
+
+
+</head>
+
+<header>
+
+
+
+
+
+</header>
+
+<body>
+
+  <header id="cabecalho">
+
+    <table  width="100%">
+        <div class="miniTabela">
+      <tr>
+            <td>        <img src="logo.png"
+                srcset="logo.png 2x,
+                logo.png 3x"
+                class="RhImg"> </td> 
+    
+            <td > <h1 > <FONT color=#005f4e > <a href="index.html">Home</a></FONT></h1></td>
+    
+            <td><h1  ><FONT color=#005f4e ><a href="index.html">Cadastre - se</a></FONT> </h1> </td>
+            <td><h1  ><FONT color=#005f4e ><a href="index.html">Contato</a></FONT></h1> </td>
+         
+        </tr>
+      </div>
+      </table>
+    
+           <hr />
+        </header>
+
+<h1 align="center">
+        INSCREVA-SE
+
+
+</h1>
+
+<h2 align="center">PARA RECEBER NOSSO MATERIAL E  ATUALIZAÇÕES </h2>
+
+<div class="formulario" align="center">
+<form action="" method="post">
+
+
+    <input name="name" placeholder=" Nome Completo" type="text" required/>
+<br>
+
+    <input name="email" placeholder="E-mail" type="email" required/>
+<br><br>
+
+     <input  type="submit" value="Enviar" />
+
+
+
+
+</form>
+</div>
+
+
+<br><br><br><br>
+
+
+        <br><br><br><br>
+        
+
+ <div class="redes">
+          <ul>
+            <li>
+              <a href="https://www.linkedin.com/company/meu-rh-agil"><img src="img/linkedIn.png" alt=""/></a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/blogmeurhagil"><img src="img/face.png" alt=""/></a>
+            </li>
+            <li>
+              <a href=" https://www.instagram.com/meurhagil/"><img src="img/insta.png" alt=""/></a>
+            </li>
+          </ul>
+        </div>
+
+            <br><br>             
+            <br><br>            
+               <br><br>                                   
+         
+        
+
+
+
+
+
+
+
+</body>
+
+
+
+</html>
